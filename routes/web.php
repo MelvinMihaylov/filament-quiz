@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuizController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,10 +23,14 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/user/{user}/quizzes', [QuizController::class, 'index'])->middleware(['auth', 'verified'])->name('user.quizzes');
+Route::get('/user/{user}/quizzes/{quiz}/quiz', [QuizController::class, 'show'])->middleware(['auth', 'verified'])->name('quiz.show');
+Route::get('/user/{user}/quizzes/{quiz}/quiz/submit', [QuizController::class, 'submit'])->middleware(['auth', 'verified'])->name('quiz.submit');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
